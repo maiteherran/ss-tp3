@@ -12,7 +12,6 @@ public class Particle {
     double vy;
     double mass;
     private boolean isBig;
-    private boolean crashed;
 
     public Particle(long id, double x, double y, double speedModule, double angle, double radius, double mass, boolean isBig) {
         this.id = id;
@@ -23,7 +22,6 @@ public class Particle {
         this.vy = speedModule*Math.sin(angle);
         this.radius = radius;
         this.mass = mass;
-        this.crashed = false;
         this.isBig = isBig;
     }
 
@@ -90,14 +88,6 @@ public class Particle {
 
     public double getMass() {
         return mass;
-    }
-
-    public boolean isCrashed() {
-        return crashed;
-    }
-
-    public void setCrashed(boolean c) {
-        crashed = c;
     }
 
     @Override

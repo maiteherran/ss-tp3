@@ -82,7 +82,6 @@ public class SimulationSpace {
                 } else {
                     nextCrash.getA().invertVy();
                 }
-                nextCrash.getA().setCrashed(true);
                 if(dcm && nextCrash.getA().isBig()) {
                     break;
                 }
