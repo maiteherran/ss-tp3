@@ -8,9 +8,9 @@ public class Main {
     private static  ProgramParameters parameters;
 
     public static void main(String[] args) throws IOException {
-        boolean generateOvitoFiles = true;
+        boolean generateOvitoFiles = false;
         boolean lastThirdVelocities = false; //punto 2
-        boolean dcm = true; //punto 3
+        boolean dcm = false; //punto 3
 
         parameters = new ProgramParameters();
         parameters.parse(args);

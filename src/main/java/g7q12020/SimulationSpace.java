@@ -32,9 +32,11 @@ public class SimulationSpace {
 
     public void simulate(double totalTime, boolean generateOvitoFiles, boolean lastThirdVelocities, boolean dcm) throws IOException {
         int f = 0;
-        file = new BufferedWriter(new FileWriter("output.txt"));
         double time = 0;
-        
+        double lastThird = totalTime*(1/3.0);
+        if(generateOvitoFiles) {
+            file = new BufferedWriter(new FileWriter("output.txt"));
+        }
 
         while (time < totalTime) {
             Crash nextCrash = calculateNextCollision();
@@ -56,8 +58,6 @@ public class SimulationSpace {
                 }
             }
 
-            double lastThird = totalTime*(1/3.0);
-
             if (lastThirdVelocities && time < lastThird)  {
                 for (Particle p : particles) {
                     if (thirdSectionSpeedAcum.containsKey(p.getId())) {
@@ -72,10 +72,8 @@ public class SimulationSpace {
             }
 
             if(nextCrash.getWall() == null){
-                nextCrash.getA().crashVx(nextCrash.elasticXcollision());
-                nextCrash.getA().crashVy(nextCrash.elasticYcollision());
-                nextCrash.getB().crashVx(-nextCrash.elasticXcollision());
-                nextCrash.getB().crashVy(-nextCrash.elasticYcollision());
+                nextCrash.getA().crash(nextCrash.jx(), nextCrash.jy());
+                nextCrash.getB().crash(nextCrash.jx()*(-1), nextCrash.jy()*(-1));
 
             } else {
                 if(nextCrash.getWall().equals(Wall.VERTICAL)){
@@ -85,9 +83,15 @@ public class SimulationSpace {
                 }
                 nextCrash.getA().setCrashed(true);
             }
+
             collisionsCounter++;
+            if(dcm && bigParticle.isCrashed()) {
+                break;
+            }
         }
-        file.close();
+        if(generateOvitoFiles) {
+            file.close();
+        }
     }
 
     private Crash calculateNextCollision() {

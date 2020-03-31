@@ -23,7 +23,7 @@ public class Crash {
         this.j = null;
     }
 
-    public double elasticXcollision() {
+    public double jx() {
         if (j == null) {
             double dVx = b.getVx() - a.getVx();
             double dVy = b.getVy() - a.getVy();
@@ -38,7 +38,7 @@ public class Crash {
         return (j*(b.getX()-a.getX()))/(a.getRadius() + b.getRadius());
     }
 
-    public double elasticYcollision() {
+    public double jy() {
         if (j == null) {
             double dVx = b.getVx() - a.getVx();
             double dVy = b.getVy() - a.getVy();

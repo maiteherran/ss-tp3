@@ -29,6 +29,11 @@ public class Particle {
         return Math.sqrt(Math.pow(vx,2)+Math.pow(vy, 2));
     }
 
+    public void crash(double jx, double jy) {
+        vx += jx/mass;
+        vy += jy/mass;
+    }
+
     public void crashVx (double j) {
         vx += j/mass;
     }
@@ -53,15 +58,6 @@ public class Particle {
         vy = (-1)*vy;
     }
 
-    public double getXat(double deltaT) {
-        return this.x + this.vx*deltaT;
-    }
-
-    public double getYat(double deltaT) {
-        return this.y + this.vy*deltaT;
-    }
-
-
     public long getId() {
         return id;
     }
@@ -85,7 +81,6 @@ public class Particle {
     public double getY() {
         return y;
     }
-
 
     public double getMass() {
         return mass;
