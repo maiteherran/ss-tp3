@@ -37,9 +37,9 @@ public class Particle {
         vy += j/mass;
     }
 
-    public void updatePosition(double deltaT) {
-        this.x += this.vx * deltaT;
-        this.y += this.vy * deltaT;
+    public void move(double dt){
+        x += vx*dt;
+        y += vy*dt;
     }
 
     public void invertVx() {

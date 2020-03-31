@@ -42,7 +42,7 @@ public class SimulationSpace {
             if (totalTime - time < nextCrashTime) { return; }
             
             for (Particle p : particles) {
-                p.updatePosition(nextCrashTime);
+                p.move(nextCrashTime);
             }
             
             time += nextCrashTime;
