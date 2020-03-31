@@ -88,9 +88,6 @@ public class SimulationSpace {
             }
 
             collisionsCounter++;
-//            if(dcm && bigParticle.isCrashed()) {
-//                break;
-//            }
         }
         if(generateOvitoFiles) {
             file.close();
