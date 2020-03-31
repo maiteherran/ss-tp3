@@ -37,8 +37,11 @@ public class Particle {
         vy += j/mass;
     }
 
-    public void move(double dt){
+    public void moveX(double dt){
         x += vx*dt;
+    }
+
+    public void moveY(double dt){
         y += vy*dt;
     }
 
