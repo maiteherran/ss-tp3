@@ -19,6 +19,7 @@ public class SimulationSpace {
     private long collisionsCounter;
     private Map<Long, Double> thirdSectionSpeedAcum;
     private long thirdSectionBreakpoints;
+    private double time;
 
     public SimulationSpace(double length, Particle bigParticle, List<Particle> particles) {
         this.bigParticle = bigParticle;
@@ -27,12 +28,12 @@ public class SimulationSpace {
         this.collisionsCounter = 0;
         this.thirdSectionSpeedAcum = new HashMap<>();
         thirdSectionBreakpoints = 0;
+        this.time = 0;
 
     }
 
     public void simulate(double totalTime, boolean generateOvitoFiles, boolean lastThirdVelocities, boolean dcm) throws IOException {
         int f = 0;
-        double time = 0;
         double lastThird = totalTime*(1/3.0);
         if(generateOvitoFiles) {
             file = new BufferedWriter(new FileWriter("output.txt"));
@@ -82,12 +83,15 @@ public class SimulationSpace {
                     nextCrash.getA().invertVy();
                 }
                 nextCrash.getA().setCrashed(true);
+                if(dcm && nextCrash.getA().isBig()) {
+                    break;
+                }
             }
 
             collisionsCounter++;
-            if(dcm && bigParticle.isCrashed()) {
-                break;
-            }
+//            if(dcm && bigParticle.isCrashed()) {
+//                break;
+//            }
         }
         if(generateOvitoFiles) {
             file.close();
@@ -195,5 +199,9 @@ public class SimulationSpace {
 
     public long getThirdSectionBreakpoints() {
         return thirdSectionBreakpoints;
+    }
+
+    public double getTime() {
+        return time;
     }
 }

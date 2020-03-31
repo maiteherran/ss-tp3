@@ -21,13 +21,13 @@ public class Main {
         simulationSpace.simulate(parameters.getTime(), generateOvitoFiles, lastThirdVelocities, dcm);
 
         System.out.println(parameters.getN() + " particles");
-        System.out.println(parameters.getTime() + " seconds");
+        System.out.println(simulationSpace.getTime() + " seconds"); //le pido el time al simultation space pq si estoy en el caso de dcm, corta cuando la partícula grande choca contra la pared
 
         //Para el punto 1
         long numberOfCollisions = simulationSpace.getCollisionsCounter();
         System.out.println("Number of collisions: " + numberOfCollisions);
 
-        double collisionFrequency = numberOfCollisions/parameters.getTime();
+        double collisionFrequency = numberOfCollisions/simulationSpace.getTime();
         System.out.println("Collision frequency: " + collisionFrequency + " per sec");
 
 

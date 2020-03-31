@@ -29,7 +29,7 @@ public class ParticlesGenerator {
         Random rand = new Random();
         List<Particle> initialParticlesDisposition = new ArrayList<>();
 
-        Particle bigParticle = new Particle(atomicInteger.incrementAndGet()-1, L/2, L/2, 0.0, 0.0, 0.05, 100);
+        Particle bigParticle = new Particle(atomicInteger.incrementAndGet()-1, L/2, L/2, 0.0, 0.0, 0.05, 100, true);
         initialParticlesDisposition.add(bigParticle);
 
         while (initialParticlesDisposition.size() != N) {
@@ -40,7 +40,8 @@ public class ParticlesGenerator {
                     Math.random() * MAX_VEL_MOD,
                     Math.random()*(MAX_ANGLE - MIN_ANGLE) + MIN_ANGLE,
                     0.005,
-                    0.1
+                    0.1,
+                    false
             );
             boolean dontOverlap = initialParticlesDisposition.stream().noneMatch(particle ->
                     Math.sqrt(Math.pow(particle.x - p.x, 2) + Math.pow(particle.y - p.y, 2)) < particle.radius + p.radius);

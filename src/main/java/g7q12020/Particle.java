@@ -11,9 +11,10 @@ public class Particle {
     double vx;
     double vy;
     double mass;
+    private boolean isBig;
     private boolean crashed;
 
-    public Particle(long id, double x, double y, double speedModule, double angle, double radius, double mass) {
+    public Particle(long id, double x, double y, double speedModule, double angle, double radius, double mass, boolean isBig) {
         this.id = id;
         this.x = x;
         this.y = y;
@@ -23,6 +24,7 @@ public class Particle {
         this.radius = radius;
         this.mass = mass;
         this.crashed = false;
+        this.isBig = isBig;
     }
 
     public double getSpeedModule() {
@@ -48,6 +50,10 @@ public class Particle {
 
     public void moveY(double dt){
         y += vy*dt;
+    }
+
+    public boolean isBig() {
+        return isBig;
     }
 
     public void invertVx() {
