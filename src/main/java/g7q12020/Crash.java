@@ -21,7 +21,6 @@ public class Crash {
         this.time = time;
         this.wall = null;
         this.j = null;
-
     }
 
     public double elasticXcollision() {

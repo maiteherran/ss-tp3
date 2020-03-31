@@ -18,8 +18,7 @@ public class Main {
         ParticlesGenerator initialParticlesGenerator = new ParticlesGenerator(parameters.getN(), parameters.getL());
         SimulationSpace simulationSpace = initialParticlesGenerator.generate();
 
-        simulationSpace.simulate(parameters.getTime(), generateOvitoFiles, lastThirdVelocities);
-        //space.runSimulationDCM(100.0);
+        simulationSpace.simulate(parameters.getTime(), generateOvitoFiles, lastThirdVelocities, dcm);
 
         System.out.println(parameters.getN() + " particles");
         System.out.println(parameters.getTime() + " seconds");

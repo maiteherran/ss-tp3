@@ -30,7 +30,7 @@ public class SimulationSpace {
 
     }
 
-    public void simulate(double totalTime, boolean generateOvitoFiles, boolean lastThirdVelocities) throws IOException {
+    public void simulate(double totalTime, boolean generateOvitoFiles, boolean lastThirdVelocities, boolean dcm) throws IOException {
         int f = 0;
         file = new BufferedWriter(new FileWriter("output.txt"));
         double time = 0;
@@ -55,7 +55,9 @@ public class SimulationSpace {
                 }
             }
 
-            if (lastThirdVelocities && time < totalTime*(1/3.0)) {
+            double lastThird = totalTime*(1/3.0);
+
+            if (lastThirdVelocities && time < lastThird)  {
                 for (Particle p : particles) {
                     if (thirdSectionSpeedAcum.containsKey(p.getId())) {
                         double d = thirdSectionSpeedAcum.get(p.getId()) + p.getSpeedModule();
@@ -85,40 +87,6 @@ public class SimulationSpace {
             collisionsCounter++;
         }
         file.close();
-    }
-
-    public void runSimulationDCM(double endTime) throws IOException {
-        double time=0.0;
-        double checkpoint = 0.0;
-        while (time < endTime && !bigParticle.isCrashed()) {
-            Crash nextCrash = calculateNextCollision();
-            if((time + nextCrash.getTime()) > checkpoint) {
-                double x = 0.25 - bigParticle.getXat(checkpoint-time);
-                double y = 0.25 - bigParticle.getYat(checkpoint-time);
-                System.out.println((x*x + y*y));
-                checkpoint+=1.0;
-            }
-            for (Particle p : particles) {
-                p.updatePosition(nextCrash.getTime());
-            }
-            time += nextCrash.getTime();
-            //crash(nextCrash);
-            if(nextCrash.getWall() == null){
-                nextCrash.getA().crashVx(nextCrash.elasticXcollision());
-                nextCrash.getA().crashVy(nextCrash.elasticYcollision());
-                nextCrash.getB().crashVx(-nextCrash.elasticXcollision());
-                nextCrash.getB().crashVy(-nextCrash.elasticYcollision());
-
-            } else {
-                if(nextCrash.getWall().equals(Wall.VERTICAL)){
-                    nextCrash.getA().invertVx();
-                } else {
-                    nextCrash.getA().invertVy();
-                }
-                nextCrash.getA().setCrashed(true);
-
-            }
-        }
     }
 
     private Crash calculateNextCollision() {
@@ -153,9 +121,7 @@ public class SimulationSpace {
                 }
             }
         }
-        if(firstCollision.getTime() < 0) {
-            throw new IllegalStateException();
-        }
+
         return firstCollision;
     }
 
