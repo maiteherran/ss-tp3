@@ -92,13 +92,19 @@ public class SimulationSpace {
     private Collision calculateNextCollision() {
         Collision firstCollision = null;
         for(Particle p : particles){
+            double timeToCollide;
+            List<Particle> parts = particles.stream().filter(q -> q.getId() <= p.getId()).collect(Collectors.toList());
+            for (Particle q : parts) {
+                timeToCollide = getTimeToParticleCollision(p, q);
+                if (firstCollision == null || timeToCollide < firstCollision.getTime()) {
+                    firstCollision = new ParticlesCrash(p, q, timeToCollide);
+                }
+            }
+
             double timeToVerticalWallCollision;
             double timeToHorizontalWallCollision;
-            double timeToCollide;
             Wall wall;
-
             timeToVerticalWallCollision = p.getTimeToVerticalWallCollision(length);
-
             timeToHorizontalWallCollision = p.getTimeToHorizontalWallCollision(length);
 
             if (timeToHorizontalWallCollision >= timeToVerticalWallCollision) {
@@ -112,15 +118,7 @@ public class SimulationSpace {
                 firstCollision = new WallCrash(p, wall, timeToCollide);
             }
 
-            List<Particle> parts = particles.stream().filter(q -> q.getId() <= p.getId()).collect(Collectors.toList());
-            for (Particle q : parts) {
-                timeToCollide = getTimeToParticleCollision(p, q);
-                if (timeToCollide < firstCollision.getTime()) {
-                    firstCollision = new ParticlesCrash(p, q, timeToCollide);
-                }
-            }
         }
-
         return firstCollision;
     }
 
