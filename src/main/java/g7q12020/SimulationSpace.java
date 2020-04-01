@@ -97,17 +97,15 @@ public class SimulationSpace {
             double timeToCollide;
             List<Particle> parts = particles.stream().filter(q -> q.getId() <= p.getId()).collect(Collectors.toList());
             for (Particle q : parts) {
-                timeToCollide = getTimeToParticleCollision(p, q);
+                timeToCollide =  p.getTimeToParticleCollision(q);
                 if (collisions.get(0) == null || timeToCollide < collisions.get(0).getTime()) {
                     collisions.add(0, new ParticlesCrash(p, q, timeToCollide));
                 }
             }
 
-            double timeToVerticalWallCollision;
-            double timeToHorizontalWallCollision;
             Wall wall;
-            timeToVerticalWallCollision = p.getTimeToVerticalWallCollision(length);
-            timeToHorizontalWallCollision = p.getTimeToHorizontalWallCollision(length);
+            double timeToVerticalWallCollision = p.getTimeToVerticalWallCollision(length);
+            double timeToHorizontalWallCollision = p.getTimeToHorizontalWallCollision(length);
 
             if (timeToHorizontalWallCollision >= timeToVerticalWallCollision) {
                 timeToCollide = timeToVerticalWallCollision;
@@ -122,38 +120,6 @@ public class SimulationSpace {
 
         }
         return collisions.get(0);
-    }
-
-    private double getTimeToWallCollision(double pos, double radius, double vel) {
-        if (vel > 0){
-            return (length - pos - radius ) * (1/vel);
-        } else if (vel < 0) {
-            return (- pos + radius ) * (1/vel);
-        }
-        return Double.MAX_VALUE;
-    }
-
-
-    private double getTimeToParticleCollision(Particle p, Particle q) {
-        double time;
-        double dRadius = p.getRadius() + q.getRadius();
-        double Δx = p.getX()-q.getX();
-        double Δvx = p.getVx()-q.getVx();
-        double Δy = p.getY()-q.getY();
-        double Δvy = p.getVy()-q.getVy();
-        double ΔvΔr = (Δvy*Δy)+(Δvx*Δx);
-
-        if (ΔvΔr >= 0) return Double.MAX_VALUE;
-        
-        double ΔrΔr = Math.pow(Δy, 2) + Math.pow(Δx, 2);
-        double ΔvΔv = Math.pow(Δvy, 2) + Math.pow(Δvx, 2);
-        double d = Math.pow(ΔvΔr, 2) - ΔvΔv * (ΔrΔr - Math.pow(dRadius, 2));
-
-        if (d < 0) return Double.MAX_VALUE;
-
-        time = -(ΔvΔr + Math.sqrt(d))/ΔvΔv;
-
-        return time;
     }
 
     public void writeOnFile(int frameNumber, double time) throws IOException  {

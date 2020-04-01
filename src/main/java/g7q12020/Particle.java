@@ -107,4 +107,26 @@ public class Particle {
     public double getTimeToHorizontalWallCollision(double length) {
         return getTimeToWallCollision(length, y, radius, vy);
     }
+
+    public double getTimeToParticleCollision(Particle q) {
+        double time;
+        double dRadius = radius + q.getRadius();
+        double Δx = x -q.getX();
+        double Δvx = vx-q.getVx();
+        double Δy = y-q.getY();
+        double Δvy = vy-q.getVy();
+        double ΔvΔr = (Δvy*Δy)+(Δvx*Δx);
+
+        if (ΔvΔr >= 0) return Double.MAX_VALUE;
+
+        double ΔrΔr = Math.pow(Δy, 2) + Math.pow(Δx, 2);
+        double ΔvΔv = Math.pow(Δvy, 2) + Math.pow(Δvx, 2);
+        double d = Math.pow(ΔvΔr, 2) - ΔvΔv * (ΔrΔr - Math.pow(dRadius, 2));
+
+        if (d < 0) return Double.MAX_VALUE;
+
+        time = -(ΔvΔr + Math.sqrt(d))/ΔvΔv;
+
+        return time;
+    }
 }
