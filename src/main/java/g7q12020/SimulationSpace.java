@@ -40,7 +40,7 @@ public class SimulationSpace {
         }
 
         while (time < totalTime) {
-            Crash nextCrash = calculateNextCollision();
+            Collision nextCrash = calculateNextCollision();
             double nextCrashTime = nextCrash.getTime();
             if (totalTime - time < nextCrashTime) { return; }
             
@@ -71,31 +71,32 @@ public class SimulationSpace {
                 }
                 thirdSectionBreakpoints++;
             }
-
-            if(nextCrash.getWall() == null){
-                nextCrash.getA().crash(nextCrash.jx(), nextCrash.jy());
-                nextCrash.getB().crash(nextCrash.jx()*(-1), nextCrash.jy()*(-1));
+            collisionsCounter++;
+            if(nextCrash.isParticlesCollision()) {
+                ParticlesCrash particlesCrash = (ParticlesCrash) nextCrash;
+                particlesCrash.getA().crash(particlesCrash.jx(), particlesCrash.jy());
+                particlesCrash.getB().crash(particlesCrash.jx()*(-1), particlesCrash.jy()*(-1));
 
             } else {
-                if(nextCrash.getWall().equals(Wall.VERTICAL)){
-                    nextCrash.getA().invertVx();
+                WallCrash wallCrash = (WallCrash) nextCrash;
+                if(wallCrash.getWall().equals(Wall.VERTICAL)){
+                    wallCrash.getA().invertVx();
                 } else {
-                    nextCrash.getA().invertVy();
+                    wallCrash.getA().invertVy();
                 }
-                if(dcm && nextCrash.getA().isBig()) {
+                if(dcm && wallCrash.getA().isBig()) {
                     break;
                 }
             }
 
-            collisionsCounter++;
         }
         if(generateOvitoFiles) {
             file.close();
         }
     }
 
-    private Crash calculateNextCollision() {
-        Crash firstCollision = null;
+    private Collision calculateNextCollision() {
+        Collision firstCollision = null;
 
         for(Particle p : particles){
             double timeToVerticalWallCollision;
@@ -115,14 +116,14 @@ public class SimulationSpace {
                 wall = Wall.HORIZONTAL;
             }
             if  (firstCollision == null || timeToCollide < firstCollision.getTime()){
-                firstCollision = new Crash(p, wall, timeToCollide);
+                firstCollision = new WallCrash(p, wall, timeToCollide);
             }
 
             List<Particle> parts = particles.stream().filter(q -> q.getId() <= p.getId()).collect(Collectors.toList());
             for (Particle q : parts) {
                 timeToCollide = getTimeToParticleCollision(p, q);
                 if (timeToCollide < firstCollision.getTime()) {
-                    firstCollision = new Crash(p, q, timeToCollide);
+                    firstCollision = new ParticlesCrash(p, q, timeToCollide);
                 }
             }
         }

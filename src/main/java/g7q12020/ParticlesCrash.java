@@ -1,25 +1,15 @@
 package g7q12020;
 
-public class Crash {
+public class ParticlesCrash implements Collision {
     final Particle a;
     final Particle b;
     final double time;
     Double j;
-    Wall wall;
 
-    public Crash(Particle a, Wall wall, double time){
-        this.a = a;
-        this.b = null;
-        this.time = time;
-        this.wall = wall;
-        this.j = null;
-    }
-
-    public Crash(Particle a, Particle b, double time) {
+    public ParticlesCrash(Particle a, Particle b, double time) {
         this.a = a;
         this.b = b;
         this.time = time;
-        this.wall = null;
         this.j = null;
     }
 
@@ -61,11 +51,14 @@ public class Crash {
         return b;
     }
 
-    public Wall getWall() {
-        return wall;
-    }
-
+    @Override
     public double getTime() {
         return time;
     }
+
+    @Override
+    public boolean isParticlesCollision() {
+        return true;
+    }
+
 }
