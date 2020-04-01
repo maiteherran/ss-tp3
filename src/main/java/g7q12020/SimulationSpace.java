@@ -4,6 +4,7 @@ package g7q12020;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -90,14 +91,15 @@ public class SimulationSpace {
     }
 
     private Collision calculateNextCollision() {
-        Collision firstCollision = null;
+        final List<Collision> collisions = new ArrayList<>();
+        collisions.add(null);
         for(Particle p : particles){
             double timeToCollide;
             List<Particle> parts = particles.stream().filter(q -> q.getId() <= p.getId()).collect(Collectors.toList());
             for (Particle q : parts) {
                 timeToCollide = getTimeToParticleCollision(p, q);
-                if (firstCollision == null || timeToCollide < firstCollision.getTime()) {
-                    firstCollision = new ParticlesCrash(p, q, timeToCollide);
+                if (collisions.get(0) == null || timeToCollide < collisions.get(0).getTime()) {
+                    collisions.add(0, new ParticlesCrash(p, q, timeToCollide));
                 }
             }
 
@@ -114,12 +116,12 @@ public class SimulationSpace {
                 timeToCollide = timeToHorizontalWallCollision;
                 wall = Wall.HORIZONTAL;
             }
-            if  (firstCollision == null || timeToCollide < firstCollision.getTime()){
-                firstCollision = new WallCrash(p, wall, timeToCollide);
+            if  (collisions.get(0) == null || timeToCollide < collisions.get(0).getTime()){
+                collisions.add(0,new WallCrash(p, wall, timeToCollide));
             }
 
         }
-        return firstCollision;
+        return collisions.get(0);
     }
 
     private double getTimeToWallCollision(double pos, double radius, double vel) {
