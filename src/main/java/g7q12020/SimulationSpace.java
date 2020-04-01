@@ -97,9 +97,9 @@ public class SimulationSpace {
             double timeToCollide;
             Wall wall;
 
-            timeToVerticalWallCollision = getTimeToWallCollision(p.getX(), p.getRadius(), p.getVx());
-            timeToHorizontalWallCollision = getTimeToWallCollision(p.getY(), p.getRadius(), p.getVy());
+            timeToVerticalWallCollision = p.getTimeToVerticalWallCollision(length);
 
+            timeToHorizontalWallCollision = p.getTimeToHorizontalWallCollision(length);
 
             if (timeToHorizontalWallCollision >= timeToVerticalWallCollision) {
                 timeToCollide = timeToVerticalWallCollision;
@@ -137,24 +137,22 @@ public class SimulationSpace {
     private double getTimeToParticleCollision(Particle p, Particle q) {
         double time;
         double dRadius = p.getRadius() + q.getRadius();
-        double dX = p.getX()-q.getX();
-        double dVx = p.getVx()-q.getVx();
-        double dY = p.getY()-q.getY();
-        double dVy = p.getVy()-q.getVy();
-        double dvdr = dVy*dY+dVx*dX;
+        double Δx = p.getX()-q.getX();
+        double Δvx = p.getVx()-q.getVx();
+        double Δy = p.getY()-q.getY();
+        double Δvy = p.getVy()-q.getVy();
+        double ΔvΔr = (Δvy*Δy)+(Δvx*Δx);
 
-        if (dvdr >= 0) {
-            return Double.MAX_VALUE;
-        }
+        if (ΔvΔr >= 0) return Double.MAX_VALUE;
+        
+        double ΔrΔr = Math.pow(Δy, 2) + Math.pow(Δx, 2);
+        double ΔvΔv = Math.pow(Δvy, 2) + Math.pow(Δvx, 2);
+        double d = Math.pow(ΔvΔr, 2) - ΔvΔv * (ΔrΔr - Math.pow(dRadius, 2));
 
-        double dRr = Math.pow(dY, 2) + Math.pow(dX, 2);
-        double dVv = Math.pow(dVy, 2) + Math.pow(dVx, 2);
-        double d = Math.pow(dvdr, 2) - dVv * (dRr - Math.pow(dRadius, 2));
+        if (d < 0) return Double.MAX_VALUE;
 
-        if (d < 0) {
-            return Double.MAX_VALUE;
-        }
-        time = -(dvdr + Math.sqrt(d))/dVv;
+        time = -(ΔvΔr + Math.sqrt(d))/ΔvΔv;
+
         return time;
     }
 

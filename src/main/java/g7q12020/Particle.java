@@ -95,4 +95,16 @@ public class Particle {
         return Objects.hash(id);
     }
 
+    public double getTimeToVerticalWallCollision(double l) {
+        return getTimeToWallCollision(l, x, radius, vx);
+    }
+
+    private double getTimeToWallCollision(double length, double pos, double radius, double vel) {
+        return Math.abs((vel > 0) ? ((length - radius - pos)/vel ) : ((radius - pos)/vel));
+
+    }
+
+    public double getTimeToHorizontalWallCollision(double length) {
+        return getTimeToWallCollision(length, y, radius, vy);
+    }
 }
