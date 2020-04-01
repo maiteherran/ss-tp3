@@ -34,14 +34,6 @@ public class Particle {
         vy += jy/mass;
     }
 
-    public void crashVx (double j) {
-        vx += j/mass;
-    }
-
-    public void crashVy (double j) {
-        vy += j/mass;
-    }
-
     public void moveX(double dt){
         x += vx*dt;
     }
