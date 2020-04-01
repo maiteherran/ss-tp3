@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
 
 public class SimulationSpace {
     private static BufferedWriter file;
-    private Particle bigParticle;
     private List<Particle> particles;
     private double length;
     private final int FRAMES_PER_SECOND = 60;
@@ -22,8 +21,7 @@ public class SimulationSpace {
     private long thirdSectionBreakpoints;
     private double time;
 
-    public SimulationSpace(double length, Particle bigParticle, List<Particle> particles) {
-        this.bigParticle = bigParticle;
+    public SimulationSpace(double length, List<Particle> particles) {
         this.length = length;
         this.particles = particles;
         this.collisionsCounter = 0;

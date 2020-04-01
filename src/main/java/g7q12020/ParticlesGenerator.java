@@ -49,6 +49,6 @@ public class ParticlesGenerator {
                 initialParticlesDisposition.add(p);
             }
         }
-        return new SimulationSpace(L, bigParticle, initialParticlesDisposition);
+        return new SimulationSpace(L, initialParticlesDisposition);
     }
 }
