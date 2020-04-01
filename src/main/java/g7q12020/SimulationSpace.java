@@ -43,14 +43,12 @@ public class SimulationSpace {
             Collision nextCrash = calculateNextCollision();
             double nextCrashTime = nextCrash.getTime();
             if (totalTime - time < nextCrashTime) { return; }
-            
+
+            time += nextCrashTime;
             for (Particle p : particles) {
                 p.moveX(nextCrashTime);
                 p.moveY(nextCrashTime);
             }
-            
-            time += nextCrashTime;
-
 
             if(generateOvitoFiles) {
                 while (f < (int) Math.floor(time/PASO))  {
@@ -71,19 +69,15 @@ public class SimulationSpace {
                 }
                 thirdSectionBreakpoints++;
             }
+
             collisionsCounter++;
             if(nextCrash.isParticlesCollision()) {
                 ParticlesCrash particlesCrash = (ParticlesCrash) nextCrash;
-                particlesCrash.getA().crash(particlesCrash.jx(), particlesCrash.jy());
-                particlesCrash.getB().crash(particlesCrash.jx()*(-1), particlesCrash.jy()*(-1));
+                particlesCrash.crash();
 
             } else {
                 WallCrash wallCrash = (WallCrash) nextCrash;
-                if(wallCrash.getWall().equals(Wall.VERTICAL)){
-                    wallCrash.getA().invertVx();
-                } else {
-                    wallCrash.getA().invertVy();
-                }
+                wallCrash.crash();
                 if(dcm && wallCrash.getA().isBig()) {
                     break;
                 }
@@ -97,7 +91,6 @@ public class SimulationSpace {
 
     private Collision calculateNextCollision() {
         Collision firstCollision = null;
-
         for(Particle p : particles){
             double timeToVerticalWallCollision;
             double timeToHorizontalWallCollision;

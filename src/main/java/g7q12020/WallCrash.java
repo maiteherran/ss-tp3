@@ -29,4 +29,12 @@ public class WallCrash implements Collision {
         return false;
     }
 
+    public void crash() {
+        if (wall.equals(Wall.VERTICAL)) {
+            a.invertVx();
+        } else {
+            a.invertVy();
+        }
+    }
+
 }

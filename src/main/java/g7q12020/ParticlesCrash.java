@@ -13,6 +13,11 @@ public class ParticlesCrash implements Collision {
         this.j = null;
     }
 
+    public void crash() {
+        a.crash(jx(), jy());
+        b.crash(jx()*(-1), jy()*(-1));
+    }
+
     public double jx() {
         if (j == null) {
             double dVx = b.getVx() - a.getVx();
