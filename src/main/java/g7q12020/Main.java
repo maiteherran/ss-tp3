@@ -3,12 +3,12 @@ package g7q12020;
 import java.io.IOException;
 import java.util.Map;
 
-public class Main {
+public class Main  {
 
     private static  ProgramParameters parameters;
 
     public static void main(String[] args) throws IOException {
-        boolean generateOvitoFiles = false;
+        boolean generateOvitoFiles = true;
         boolean lastThirdVelocities = false; //punto 2
         boolean dcm = false; //punto 3
 

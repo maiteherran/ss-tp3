@@ -16,7 +16,7 @@ public class ParticlesGenerator {
     private final static Double MIN_VEL_MOD = 0.0;
     private final static double MAX_VEL_MOD = 0.1;
 
-    //private final static double defaultSpeedModule = 0.03;
+    private final static double defaultSpeedModule = 0.03;
 
     private static AtomicInteger atomicInteger = new AtomicInteger(0);
 

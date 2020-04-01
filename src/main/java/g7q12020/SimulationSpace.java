@@ -180,7 +180,8 @@ public class SimulationSpace {
             file.write(  p.getId() + " " +
                     (- (p.getVx()*d) + p.getX()) + " " +
                     (- (p.getVy()*d) + p.getY()) + " " +
-                    p.getRadius());
+                    p.getRadius() + " " +
+            p.getSpeedModule());
             file.newLine();
         }
     }
